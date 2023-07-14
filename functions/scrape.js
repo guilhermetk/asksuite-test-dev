@@ -12,17 +12,14 @@ exports.scrape = async (checkin, checkout) => {
   const page = await navigateToPage(browser, checkin, checkout);
 
   const roomsAvailable = await checkForRoomsAvailability(page);
-
   if (roomsAvailable.length === 0) {
-    const error = new Error(
-      "No rooms found for given dates, choose another period."
-    );
+    const error = new Error("No rooms found, try again with different dates.");
     error.statusCode = 422;
     BrowserService.closeBrowser(browser);
     throw error;
   }
 
-  const availableRooms = await extractRoomData(roomsAvailable);
+  const availableRooms = await extractRoomsData(roomsAvailable);
   BrowserService.closeBrowser(browser);
   return availableRooms;
 };
@@ -43,7 +40,7 @@ async function navigateToPage(browser, checkin, checkout) {
   return page;
 }
 
-async function extractRoomData(roomsTable) {
+async function extractRoomsData(roomsTable) {
   return await Promise.all(
     roomsTable.map(async (room) => {
       return {

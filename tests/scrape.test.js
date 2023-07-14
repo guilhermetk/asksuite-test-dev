@@ -44,7 +44,7 @@ describe("test routes", function () {
     expect(res.header["content-type"]).toBe("application/json; charset=utf-8");
     expect(res.statusCode).toBe(422);
     expect(JSON.parse(res.text).message).toEqual(
-      "No rooms found for given dates, choose another period."
+      "No rooms found, try again with different dates."
     );
   });
 
